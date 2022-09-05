@@ -34,17 +34,17 @@ These cache files contain binary formatted data of the requests and responses th
 But the journey to full JS execution is longer than I thought. The JS code cache files under the `Code Cache/js` directory are binary serialized JS files and this is the first stop when receiving new JS code from the server.
 
 <p align="center">
-<img alt="image" src="https://user-images.githubusercontent.com/519424/188517731-d8b0f455-3592-4462-a2df-a94869328375.png">
+<img alt="image" src="https://user-images.githubusercontent.com/519424/188520069-a4a01a20-9952-4b76-a1c3-098ae2c3e226.png">
 </p>
 
 Next, Slack unpacks the JS code and stores it in a different JS code cache directory under `SLACK_DIR/Service Worker/CacheStorage`
 <p align="center">
-<img alt="image" src="https://user-images.githubusercontent.com/519424/188517826-5c375ab9-b0eb-4ffb-bc9e-ee83ed2bbeb0.png">
+<img alt="image" src="https://user-images.githubusercontent.com/519424/188519927-7bfa1e56-b39a-4774-bad1-99d7a34e79a1.png">
 </p>
 
 Here, the JS code is unpacked and looks much like the regular obfuscated Slack code we are used to see while debugging it.
 <p align="center">
-<img alt="image" src="https://user-images.githubusercontent.com/519424/188517875-994bea70-fcc3-4f1d-85a9-1c24a7eaa526.png">
+<img alt="image" src="https://user-images.githubusercontent.com/519424/188520016-fc399366-b3f3-4beb-bbe7-e979e05513d7.png">
 </p>
 
 Cool, so now we know where the actual code is found. But what do we need to patch in order to keep deleted messages? I used Chrome debugging tools to inspect all HTTP requests and WebSocket traffic. I quickly found out that most of the action takes place through WebSocket messages. 
