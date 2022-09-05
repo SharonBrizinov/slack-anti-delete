@@ -4,12 +4,15 @@ TL;DR: I patched my Slack client to keep messages that others delete.
 
 Let's say someone sent me a message, immediately regretted it and tried to delete it. They will think the message got deleted on both ends ("delete for everyone"), but using this patch my client will keep the message anyway and notify me that someone tried to delete it 😬. [This is a follow-up research I did on how Slack is working internally](https://github.com/SharonBrizinov/slack-sounds).
 
-https://user-images.githubusercontent.com/519424/188516996-d0c73281-32de-4f20-9317-6cba84d9050c.mov
+![SharonBrizinov_slack-anti-delete](https://user-images.githubusercontent.com/519424/188519530-346b73a3-91bb-48c7-8821-c2ad13b17155.png)
 
 As a bonus, you'll also get a nice notification telling you who tried to delete a message.
 <p align="center">
 <img alt="image" src="https://user-images.githubusercontent.com/519424/188516989-223be9c4-e710-488b-9b6f-d59626abafdf.jpg">
 </p>
+
+## Demo
+https://user-images.githubusercontent.com/519424/188516996-d0c73281-32de-4f20-9317-6cba84d9050c.mov
 
 ## Instructions (Mac OSX only)
 run `python3 slack_patch_delete.py`.
