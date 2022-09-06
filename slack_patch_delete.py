@@ -7,8 +7,8 @@ import platform
 from pathlib import Path
 
 
-MESSAGE_DELETED = "message_deleted"
-MESSAGE_DELETED_REP = "m3ssag3_d3l3t3d"
+MESSAGE_DELETED = b"message_deleted"
+MESSAGE_DELETED_REP = b"m3ssag3_d3l3t3d"
 JS_FILE_TYPE_MAGIC = binascii.unhexlify("D8 41 0D 97".replace(" ",""))
 
 
@@ -21,7 +21,7 @@ def patch_file(file):
 	js_file_data = file.read_bytes()
 
 	# Check if file needs to be patched
-	if MESSAGE_DELETED in str(js_file_data):
+	if MESSAGE_DELETED in js_file_data:
 		print(f"[-] Patching file: {file}")
 		# Code Cache File: header, js file path, js data, magic type?, js data size, js crc, request
 		offset_js_data_start_pos = struct.unpack("<I", js_file_data[12:16])[0] + 24
@@ -30,7 +30,7 @@ def patch_file(file):
 		cache_file_header_and_data, cache_file_metadata_and_request = js_file_data.split(b");" + JS_FILE_TYPE_MAGIC)
 		js_file_data = cache_file_header_and_data[offset_js_data_start_pos:] + b");" # 2
 		# Replace and fix crc
-		js_file_data_fixed = js_file_data.replace(b"message_deleted", b"message_delet3d")
+		js_file_data_fixed = js_file_data.replace(MESSAGE_DELETED, MESSAGE_DELETED_REP)
 		crc_calc = crc(js_file_data_fixed)
 		# Build cache file
 		cache_file_data_fixed = cache_file_header + js_file_data_fixed + JS_FILE_TYPE_MAGIC + cache_file_metadata_and_request[:8] + crc_calc + cache_file_metadata_and_request[12:]
