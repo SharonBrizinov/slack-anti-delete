@@ -7,8 +7,6 @@ import platform
 from pathlib import Path
 
 
-system = platform.system().lower()
-
 MESSAGE_DELETED = "message_deleted"
 MESSAGE_DELETED_REP = "m3ssag3_d3l3t3d"
 JS_FILE_TYPE_MAGIC = binascii.unhexlify("D8 41 0D 97".replace(" ",""))
@@ -17,8 +15,6 @@ JS_FILE_TYPE_MAGIC = binascii.unhexlify("D8 41 0D 97".replace(" ",""))
 def crc(d):
 	return struct.pack("<I", binascii.crc32(d))
 
-def x(d):
-	return binascii.unhexlify(d.replace(" ",""))
 
 def patch_file(file):
 	cache_file_data_fixed = b""
@@ -43,34 +39,41 @@ def patch_file(file):
 	return False
 
 
-if __name__ == "__main__":
-	print("[-] Searching for Slack dir cache storage")
-
+def locate_slack():
+	system = platform.system().lower()
 	slack_dir = False
+
+	print("[-] Searching for Slack dir cache storage")
 	if system == 'windows':
 		slack_dir = Path(os.getenv('APPDATA')) / 'Slack'
 	elif system == 'darwin':
 		slack_dirs = [
 			"Application Support/Slack/Service Worker/CacheStorage",
-			"/Containers/com.tinyspeck.slackmacgap/Data/Library/Application Support/Slack"
+			"Containers/com.tinyspeck.slackmacgap/Data/Library/Application Support/Slack"
 		]
 		for slack_dir in slack_dirs:
 			slack_dir = Path(os.getenv('HOME')) / 'Library' / slack_dir
 			if slack_dir.exists():
 				break
 
+	# Check if slack dir exists
 	if not slack_dir or not slack_dir.exists():
 		print(f"ERROR: Unsupported system: {system}")
 		sys.exit(1)
 
 	print(f"[-] Slack dir found at {slack_dir}")
-	print(f"[-] Searching for JS code cache files")
+	return slack_dir
 
-	files = list(f for f in slack_dir.glob('**/*') if f.is_file())
-	for f in files:
-		try:
-			patch_file(f)
-		except Exception as e:
-			continue
 
-	print("[-] Done! restart Slack")
+if __name__ == "__main__":
+	if slack_dir := locate_slack():
+
+		print(f"[-] Searching for JS code cache files")
+		files = list(f for f in slack_dir.glob('**/*') if f.is_file())
+		for f in files:
+			try:
+				patch_file(f)
+			except Exception as e:
+				continue
+
+		print("[-] Done! restart Slack")
