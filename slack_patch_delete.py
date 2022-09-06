@@ -50,7 +50,14 @@ if __name__ == "__main__":
 	if system == 'windows':
 		slack_dir = Path(os.getenv('APPDATA')) / 'Slack'
 	elif system == 'darwin':
-		slack_dir = Path(os.getenv('HOME')) / 'Library/Application Support/Slack/Service Worker/CacheStorage'
+		slack_dirs = [
+			"Application Support/Slack/Service Worker/CacheStorage",
+			"/Containers/com.tinyspeck.slackmacgap/Data/Library/Application Support/Slack"
+		]
+		for slack_dir in slack_dirs:
+			slack_dir = Path(os.getenv('HOME')) / 'Library' / slack_dir
+			if slack_dir.exists():
+				break
 
 	if not slack_dir or not slack_dir.exists():
 		print(f"ERROR: Unsupported system: {system}")
