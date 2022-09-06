@@ -21,7 +21,7 @@ run `python3 slack_patch_delete.py`.
 The backstory is kind of funny - not so long ago my friend had a rant about his former boss. He told me a story of how his former boss accidently sent him a nasty message and then immediately deleted it. My friend wanted to confront him but had no proof because the message was gone too quickly..
 
 ## Technical Details
-After my previous research on [how Slack manages local cache media files](https://github.com/SharonBrizinov/slack-sounds/edit/main/README.md), I moved forward to research how the JS code files are stored. I opened Slack in debug mode and started to dig in. Turns out the JS files are also kept in special offline static cache files with proprietary binary format. 
+After my previous research on [how Slack manages local cache media files](https://github.com/SharonBrizinov/slack-sounds), I moved forward to research how the JS code files are stored. I opened Slack in debug mode and started to dig in. Turns out the JS files are also kept in special offline static cache files with proprietary binary format. 
 
 The first stop is `SLACK_DIR/Code Cache/js`. (BTW on Mac OSX Slack dir can be `~/Library/Application Support/Slack` or `~/Library/Containers/com.tinyspeck.slackmacgap/Data/Library/Application Support/Slack`).
 
