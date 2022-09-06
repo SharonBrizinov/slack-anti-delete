@@ -22,7 +22,7 @@ def patch_file(file):
 
 	# Check if file needs to be patched
 	if MESSAGE_DELETED in js_file_data:
-		print(f"[-] Patching file: {file}")
+		print(f"	[-] Patching file: {file}")
 		# Code Cache File: header, js file path, js data, magic type?, js data size, js crc, request
 		offset_js_data_start_pos = struct.unpack("<I", js_file_data[12:16])[0] + 24
 		cache_file_header = js_file_data[:offset_js_data_start_pos] # 1
@@ -48,8 +48,8 @@ def locate_slack():
 		slack_dir = Path(os.getenv('APPDATA')) / 'Slack'
 	elif system == 'darwin':
 		slack_dirs = [
-			"Application Support/Slack/Service Worker/CacheStorage",
-			"Containers/com.tinyspeck.slackmacgap/Data/Library/Application Support/Slack"
+			"Containers/com.tinyspeck.slackmacgap/Data/Library/Application Support/Slack",
+			"Application Support/Slack/Service Worker/CacheStorage"
 		]
 		for slack_dir in slack_dirs:
 			slack_dir = Path(os.getenv('HOME')) / 'Library' / slack_dir
@@ -66,14 +66,14 @@ def locate_slack():
 
 
 if __name__ == "__main__":
-	if slack_dir := locate_slack():
+	slack_dir = locate_slack()
 
-		print(f"[-] Searching for JS code cache files")
-		files = list(f for f in slack_dir.glob('**/*') if f.is_file())
-		for f in files:
-			try:
-				patch_file(f)
-			except Exception as e:
-				continue
+	print(f"[-] Searching for JS code cache files")
+	files = list(f for f in slack_dir.glob('**/*') if f.is_file())
+	for f in files:
+		try:
+			patch_file(f)
+		except Exception as e:
+			continue
 
-		print("[-] Done! restart Slack")
+	print("[-] Done! restart Slack")
