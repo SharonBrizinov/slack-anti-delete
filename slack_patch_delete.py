@@ -55,6 +55,8 @@ def locate_slack():
 			slack_dir = Path(os.getenv('HOME')) / 'Library' / slack_dir
 			if slack_dir.exists():
 				break
+	elif system == 'linux':
+		slack_dir = Path(os.getenv('HOME')) / '.config/Slack/Service Worker/CacheStorage'
 
 	# Check if slack dir exists
 	if not slack_dir or not slack_dir.exists():
