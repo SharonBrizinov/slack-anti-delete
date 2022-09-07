@@ -14,7 +14,7 @@ As a bonus, you'll also get a nice notification telling you who tried to delete 
 ## Demo
 https://user-images.githubusercontent.com/519424/188516996-d0c73281-32de-4f20-9317-6cba84d9050c.mov
 
-## Instructions (Mac OSX, Windows)
+## Instructions (Mac OSX, Windows, Linux)
 run `python3 slack_patch_delete.py`.
 
 ## Backstory
